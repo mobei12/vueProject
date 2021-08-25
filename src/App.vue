@@ -1,26 +1,56 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+	<div id="nav" v-if="showNav">
+		<router-link to="/">Home</router-link> |
+		<router-link to="/exercise">exercise</router-link> |
+		<router-link to="/about">About</router-link> |
+		<button @click.prevent="loginOut">退出</button>
+	</div>
+	<router-view />
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+	name: "app",
+	data() {
+		return {};
+	},
+	computed: {
+		showNav() {
+			return this.$route.path !== "/login";
+		}
+	},
+	methods: {
+		loginOut() {
+			localStorage.clear();
+			this.$router.push("/login");
+		}
+	},
+	created() {},
+	mounted() {
+		if (!localStorage.getItem("_id")) {
+			this.$router.push("/login");
+		}
+	}
+};
 </script>
-
-<style>
+<style lang="less">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+	font-family: Avenir, Helvetica, Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-align: center;
+	color: #2c3e50;
+}
+
+#nav {
+	padding: 30px;
+
+	a {
+		font-weight: bold;
+		color: #2c3e50;
+
+		&.router-link-exact-active {
+			color: #42b983;
+		}
+	}
 }
 </style>

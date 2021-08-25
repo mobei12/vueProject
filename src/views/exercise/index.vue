@@ -1,0 +1,290 @@
+<template>
+	<div class="exercise" :style="{ background: tempColor }">
+		<h2
+			class="start double-center"
+			v-if="state === '0'"
+			@click="state = '1'"
+		>
+			开始
+		</h2>
+		<div class="set double-center " v-else-if="state === '1'">
+			<h2 class="title">设置界面</h2>
+			<div class="set-item">
+				<span>运动💪:</span>
+				<input type="number" v-model.number="exerciseTime" />
+				<span>分</span>
+			</div>
+			<div class="set-item">
+				<span>需要休息♨️:</span
+				><input type="checkbox" v-model="needRest" />
+			</div>
+			<template v-if="needRest">
+				<div class="set-item">
+					<span>休息次数:</span>
+					<input type="number" v-model.number="restNumber" />
+					<span>次</span>
+				</div>
+				<div class="set-item">
+					<span>单次休息⌛️:</span>
+					<input type="number" v-model.number="restTime" />
+					<span>秒</span>
+				</div>
+			</template>
+			<button class="" @click="confirmSet('2')">确认</button>
+		</div>
+		<div class="exerciseIng double-center" v-else-if="state === '2'">
+			<h2 class="title">运动界面</h2>
+			<h3 class="detail">本次运动{{ exerciseTime * 60 }}秒</h3>
+			<h3 class="exercise-detail">
+				还要运动{{ exerciseNumber }}次每次{{ partExerciseTime }}秒
+			</h3>
+			<h3 v-if="needRest" class="rest">
+				还有{{ restNumber }}次休息{{ restTime }}秒的机会
+			</h3>
+			<h1 class="countdown">
+				{{ restIng ? "休息" : "运动" }}读秒{{ countdown }}
+			</h1>
+			<div class="exerciseIng-item" v-if="!exerciseIng">
+				<button
+					style="background: linear-gradient(315deg,#498ff2 0,#4965f2 100%)"
+					@click="start()"
+				>
+					开始
+				</button>
+			</div>
+		</div>
+		<div class="exerciseSuccess double-center" v-else-if="state === '3'">
+			运动完成✅,不错哦⛽️
+		</div>
+	</div>
+</template>
+
+<script>
+export default {
+	name: "exercise",
+	data() {
+		return {
+			state: "1", //0开始状态,1设置状态,2运动窗口,3锻炼完成
+			needRest: false, //是否需要休息
+			exerciseTime: 0, //运动时间
+			partExerciseTime: 0, //单次运动时间
+			exerciseNumber: 1, //运动次数
+			restNumber: 0, //休息次数
+			restTime: 0, //每次休息时间
+			countdown: 0, //读秒
+			timer: null,
+			restIng: false, //正在休息
+			tempColor: "#fff",
+			exerciseIng: false, //
+			audio: new Audio("../../static/file/ready.mp3")
+		};
+	},
+	methods: {
+		confirmSet() {
+			if (this.exerciseTime <= 0) {
+				alert("运动时间不能为空");
+				return;
+			}
+			if (
+				(this.needRest && this.restTime <= 0) ||
+				(this.needRest && this.restNumber <= 0)
+			) {
+				alert("要休息就要有休息时间");
+				return;
+			}
+			let partExerciseTime = this.exerciseTime * 60;
+			if (this.needRest && this.restNumber > 0) {
+				partExerciseTime = Math.round(
+					(this.exerciseTime * 60) / (this.restNumber + 1)
+				);
+				this.exerciseNumber = this.restNumber + 1;
+			}
+			this.partExerciseTime = partExerciseTime;
+			this.state = "2";
+		},
+		start() {
+			this.tempColor = "#000";
+			this.exerciseIng = true;
+			this.countdown = this.partExerciseTime;
+			this.exerciseNumber = this.exerciseNumber - 1;
+			this.audio.src = "../../static/file/ready.mp3";
+			this.audio.play();
+			setTimeout(() => {
+				this.Interval();
+			}, 4000);
+		},
+		Interval() {
+			this.timer = setInterval(() => {
+				this.countdown = this.countdown - 1;
+				if (this.countdown <= 5) {
+					if (this.restIng) {
+						if (this.countdown === 4) {
+							this.audio.src = "../../static/file/ready.mp3";
+							this.audio.play();
+						}
+						if (this.countdown % 2 === 0) {
+							// 偶数
+							this.tempColor = "rgb(68 206 246 / 50%)";
+						} else {
+							// 奇数
+							this.tempColor = "#44cef6";
+						}
+					} else {
+						if (this.countdown % 2 === 0) {
+							this.tempColor = "rgba(0,0,0,0.5)";
+						} else {
+							this.tempColor = "#000";
+						}
+					}
+				}
+				if (this.countdown === 0) {
+					if (this.needRest) {
+						if (this.restIng) {
+							this.exerciseNumber = this.exerciseNumber - 1;
+							this.restIng = false;
+							this.countdown = this.partExerciseTime;
+							this.tempColor = "#000";
+						} else {
+							if (this.restNumber > 0) {
+								this.restNumber = this.restNumber - 1;
+								this.restIng = true;
+								this.countdown = this.restTime;
+								this.tempColor = "#44cef6";
+							} else {
+								this.tempColor = "#eacd76";
+								this.state = "3";
+								this.audio.src =
+									"../../static/file/success.mp3";
+								this.audio.play();
+								window.clearInterval(this.timer);
+							}
+						}
+					} else {
+						this.state = "3";
+						this.tempColor = "#eacd76";
+						this.audio.src = "../../static/file/success.mp3";
+						this.audio.play();
+						window.clearInterval(this.timer);
+					}
+				}
+			}, 1000);
+		},
+		rest() {}
+	}
+};
+</script>
+
+<style lang="less" scoped>
+.exercise {
+	text-align: center;
+	font-size: 1.2em;
+	left: 0;
+	top: 0;
+	.double-center {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translateY(-50%) translateX(-50%);
+		box-shadow: rgba(0, 0, 0, 50%) 0px 0px 8px;
+	}
+	.start {
+		font-size: 2rem;
+		font-weight: 500;
+	}
+	.set {
+		width: 80vw;
+		height: 80vw;
+		border: 3px solid darkcyan;
+		border-radius: 5px;
+		display: flex;
+		gap: 1rem;
+		flex-direction: column;
+		padding-top: 10%;
+		button {
+			position: absolute;
+			bottom: 10%;
+			left: 50%;
+			background: linear-gradient(315deg, #498ff2 0, #4965f2 100%);
+			transform: translateX(-50%);
+			border-radius: 5px;
+			padding: 5px 20px;
+			color: #fff;
+			border: none;
+			font-weight: 500;
+			font-size: 1rem;
+		}
+		.title {
+			position: absolute;
+			top: -15%;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+		.set-item {
+			display: grid;
+			grid-template-columns: 2fr 2fr 1fr;
+			grid-template-rows: 1fr;
+			text-align: left;
+			padding: 0 5px;
+			align-items: center;
+			input {
+				border-radius: 5px;
+				border: 1px solid;
+				padding: 5px;
+				width: 5rem;
+			}
+			input[type="checkbox"] {
+				height: 1.5em;
+				width: 1.5rem;
+			}
+			span:last-child {
+				text-align: right;
+				font-weight: 500;
+			}
+		}
+	}
+	.exerciseIng {
+		width: 80vw;
+		height: 80vw;
+		border: 3px solid darkcyan;
+		border-radius: 5px;
+		display: flex;
+		gap: 1rem;
+		flex-direction: column;
+		padding-top: 10%;
+		.title {
+			position: absolute;
+			top: -15%;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+		.detail {
+			color: #0aa344;
+		}
+		.exercise-detail {
+			color: #f20c00;
+		}
+	}
+	.rest {
+		color: #3eede7;
+	}
+	.countdown {
+		color: #dc3023;
+		font-size: 3.5rem;
+		font-weight: 700;
+	}
+	.exerciseIng-item {
+		button {
+			color: #fff;
+			background: #ff4d4f;
+			border: none;
+			border-radius: 5px;
+			padding: 5px 20px;
+			background: linear-gradient(135deg, #fa2c19 0, #fa6419 100%);
+			border: 1px solid transparent;
+		}
+	}
+}
+.exerciseSuccess {
+	font-size: 3rem;
+}
+</style>
