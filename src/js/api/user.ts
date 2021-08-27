@@ -29,14 +29,14 @@ export class UserService {
 	}
 
 	static async resgister(params: LoginParams): Promise<HttpResponse> {
-		return Axios("/api/user/resgister", {
+		return Axios("/api/user/register", {
 			method: "get",
 			responseType: "json",
 			params: {
 				...params
 			}
 		}).then(response => {
-			return response.data;
+			return response;
 		});
 	}
 }
