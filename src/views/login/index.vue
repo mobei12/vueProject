@@ -17,8 +17,8 @@ import { UserService } from "../../js/api/user";
 export default defineComponent({
 	setup() {
 		const state = reactive({
-			Account: "漠北", //账户
-			Password: "123321" //密码
+			Account: "", //账户
+			Password: "" //密码
 		});
 		const router = useRouter();
 		const handleLogin = async () => {
@@ -49,7 +49,7 @@ export default defineComponent({
 				password: state.Password
 			};
 			await UserService.resgister(loginParams).then(res => {
-				if (res.data._id) {
+				if (res.data._id && res.data._id !== null) {
 					Toast.success(`${res.data.username}你注册成功了`);
 				} else {
 					Toast.fail(res.data.desc);
