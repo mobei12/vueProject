@@ -30,7 +30,7 @@
 					<span>秒</span>
 				</div>
 			</template>
-			<button class="" @click="confirmSet('2')">确认</button>
+			<button class="" @click="confirmSet">确认</button>
 		</div>
 		<div class="exerciseIng double-center" v-else-if="state === '2'">
 			<h2 class="title">运动界面</h2>
