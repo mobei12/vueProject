@@ -1,7 +1,7 @@
 const tsImportPluginFactory = require("ts-import-plugin");
 const merge = require("webpack-merge");
 module.exports = {
-	//publicPath: "/web/",
+	publicPath: "/dist/",
 	parallel: false, //关闭快速打包,把vant打包进来
 	devServer: {
 		proxy: {
