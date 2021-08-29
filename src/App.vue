@@ -1,15 +1,22 @@
 <template>
 	<div id="nav" v-if="showNav">
-		<router-link to="/">Home</router-link> |
+		<router-link to="/home">Home</router-link> |
 		<router-link to="/exercise">exercise</router-link> |
 		<router-link to="/about">About</router-link> |
-		<button @click.prevent="loginOut">退出</button>
+		<van-button size="small" type="primary" @click.prevent="loginOut"
+			>退出</van-button
+		>
 	</div>
 	<router-view />
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, reactive, toRefs } from "vue";
+import { Button } from "vant";
+export default defineComponent({
 	name: "app",
+	components: {
+		vanButton: Button
+	},
 	data() {
 		return {};
 	},
@@ -24,13 +31,18 @@ export default {
 			this.$router.push("/login");
 		}
 	},
-	created() {},
 	mounted() {
 		if (!localStorage.getItem("_id")) {
 			this.$router.push("/login");
 		}
+	},
+	setup() {
+		const state = reactive({});
+		return {
+			...toRefs(state)
+		};
 	}
-};
+});
 </script>
 <style lang="less">
 #app {
@@ -39,11 +51,21 @@ export default {
 	-moz-osx-font-smoothing: grayscale;
 	text-align: center;
 	color: #2c3e50;
+	position: relative;
 }
 
 #nav {
-	padding: 30px;
-
+	padding: 30px 0;
+	position: absolute;
+	z-index: 10;
+	display: flex;
+	justify-content: space-around;
+	align-content: center;
+	align-items: center;
+	left: 50%;
+	transform: translateX(-50%);
+	gap: 0.5rem;
+	width: 70%;
 	a {
 		font-weight: bold;
 		color: #2c3e50;

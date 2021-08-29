@@ -22,6 +22,9 @@ export default defineComponent({
 		});
 		const router = useRouter();
 		const handleLogin = async () => {
+			if (state.Account === "" || !state.Password) {
+				Toast.fail("用户名密码不能为空");
+			}
 			const loginParams = {
 				username: state.Account,
 				password: state.Password
@@ -44,6 +47,9 @@ export default defineComponent({
 			});
 		};
 		const handleRegister = async () => {
+			if (state.Account === "" || !state.Password) {
+				Toast.fail("用户名密码不能为空");
+			}
 			const loginParams = {
 				username: state.Account,
 				password: state.Password

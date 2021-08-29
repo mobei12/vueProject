@@ -41,9 +41,7 @@
 			<h3 v-if="needRest" class="rest">
 				还有{{ restNumber }}次休息{{ restTime }}秒的机会
 			</h3>
-			<h1 class="countdown">
-				{{ restIng ? "休息" : "运动" }}读秒{{ countdown }}
-			</h1>
+			<div class="countdown">{{ countdown }}</div>
 			<div class="exerciseIng-item" v-if="!exerciseIng">
 				<button
 					style="background: linear-gradient(315deg,#498ff2 0,#4965f2 100%)"
@@ -59,11 +57,12 @@
 	</div>
 </template>
 
-<script>
-export default {
-	name: "exercise",
-	data() {
-		return {
+<script lang="ts">
+import { defineComponent, reactive, toRefs } from "vue";
+import { Toast } from "vant";
+export default defineComponent({
+	setup() {
+		const state = reactive({
 			state: "1", //0开始状态,1设置状态,2运动窗口,3锻炼完成
 			needRest: false, //是否需要休息
 			exerciseTime: 0, //运动时间
@@ -72,106 +71,110 @@ export default {
 			restNumber: 0, //休息次数
 			restTime: 0, //每次休息时间
 			countdown: 0, //读秒
-			timer: null,
 			restIng: false, //正在休息
 			tempColor: "#fff",
-			exerciseIng: false, //
-			audio: new Audio("../../static/file/ready.mp3")
+			exerciseIng: false //
+		});
+		let timer: number;
+		let audio = new Audio();
+		let ready = require("../../static/file/ready.mp3");
+		let success = require("../../static/file/success.mp3");
+		const start = function() {
+			state.tempColor = "#000";
+			state.exerciseIng = true;
+			state.countdown = state.partExerciseTime;
+			state.exerciseNumber = state.exerciseNumber - 1;
+			audio.src = ready;
+			audio.play();
+			setTimeout(() => {
+				Interval();
+			}, 4000);
 		};
-	},
-	methods: {
-		confirmSet() {
-			if (this.exerciseTime <= 0) {
-				alert("运动时间不能为空");
+		const confirmSet = function() {
+			if (state.exerciseTime <= 0) {
+				Toast.fail("运动时间不能为空");
 				return;
 			}
 			if (
-				(this.needRest && this.restTime <= 0) ||
-				(this.needRest && this.restNumber <= 0)
+				(state.needRest && state.restTime <= 0) ||
+				(state.needRest && state.restNumber <= 0)
 			) {
-				alert("要休息就要有休息时间");
+				Toast.fail("要休息就要有休息时间");
 				return;
 			}
-			let partExerciseTime = this.exerciseTime * 60;
-			if (this.needRest && this.restNumber > 0) {
+			let partExerciseTime = state.exerciseTime * 60;
+			if (state.needRest && state.restNumber > 0) {
 				partExerciseTime = Math.round(
-					(this.exerciseTime * 60) / (this.restNumber + 1)
+					(state.exerciseTime * 60) / (state.restNumber + 1)
 				);
-				this.exerciseNumber = this.restNumber + 1;
+				state.exerciseNumber = state.restNumber + 1;
 			}
-			this.partExerciseTime = partExerciseTime;
-			this.state = "2";
-		},
-		start() {
-			this.tempColor = "#000";
-			this.exerciseIng = true;
-			this.countdown = this.partExerciseTime;
-			this.exerciseNumber = this.exerciseNumber - 1;
-			this.audio.src = "../../static/file/ready.mp3";
-			this.audio.play();
-			setTimeout(() => {
-				this.Interval();
-			}, 4000);
-		},
-		Interval() {
-			this.timer = setInterval(() => {
-				this.countdown = this.countdown - 1;
-				if (this.countdown <= 5) {
-					if (this.restIng) {
-						if (this.countdown === 4) {
-							this.audio.src = "../../static/file/ready.mp3";
-							this.audio.play();
+			state.partExerciseTime = partExerciseTime;
+			state.state = "2";
+		};
+		const Interval = function() {
+			timer = window.setInterval(() => {
+				state.countdown = state.countdown - 1;
+				if (state.countdown <= 5) {
+					if (state.restIng) {
+						if (state.countdown === 4) {
+							audio.src = ready;
+							audio.play();
 						}
-						if (this.countdown % 2 === 0) {
+						if (state.countdown % 2 === 0) {
 							// 偶数
-							this.tempColor = "rgb(68 206 246 / 50%)";
+							state.tempColor = "rgb(68 206 246 / 50%)";
 						} else {
 							// 奇数
-							this.tempColor = "#44cef6";
+							state.tempColor = "#44cef6";
 						}
 					} else {
-						if (this.countdown % 2 === 0) {
-							this.tempColor = "rgba(0,0,0,0.5)";
+						if (state.countdown % 2 === 0) {
+							state.tempColor = "rgba(0,0,0,0.5)";
 						} else {
-							this.tempColor = "#000";
+							state.tempColor = "#000";
 						}
 					}
 				}
-				if (this.countdown === 0) {
-					if (this.needRest) {
-						if (this.restIng) {
-							this.exerciseNumber = this.exerciseNumber - 1;
-							this.restIng = false;
-							this.countdown = this.partExerciseTime;
-							this.tempColor = "#000";
+				if (state.countdown === 0) {
+					if (state.needRest) {
+						if (state.restIng) {
+							state.exerciseNumber = state.exerciseNumber - 1;
+							state.restIng = false;
+							state.countdown = state.partExerciseTime;
+							state.tempColor = "#000";
 						} else {
-							if (this.restNumber > 0) {
-								this.restNumber = this.restNumber - 1;
-								this.restIng = true;
-								this.countdown = this.restTime;
-								this.tempColor = "#44cef6";
+							if (state.restNumber > 0) {
+								state.restNumber = state.restNumber - 1;
+								state.restIng = true;
+								state.countdown = state.restTime;
+								state.tempColor = "#44cef6";
 							} else {
-								this.tempColor = "#eacd76";
-								this.state = "3";
-								this.audio.src =
-									"../../static/file/success.mp3";
-								this.audio.play();
-								window.clearInterval(this.timer);
+								state.tempColor = "#eacd76";
+								state.state = "3";
+								audio.src = success;
+								audio.play();
+								window.clearInterval(timer);
 							}
 						}
 					} else {
-						this.state = "3";
-						this.tempColor = "#eacd76";
-						this.audio.src = "../../static/file/success.mp3";
-						this.audio.play();
-						window.clearInterval(this.timer);
+						state.state = "3";
+						state.tempColor = "#eacd76";
+						audio.src = success;
+						audio.play();
+						window.clearInterval(timer);
 					}
 				}
 			}, 1000);
-		},
-		rest() {}
+		};
+		return {
+			...toRefs(state),
+			start,
+			confirmSet,
+			Interval
+		};
 	}
-};
+});
 </script>
 
 <style lang="less" scoped>
@@ -180,6 +183,8 @@ export default {
 	font-size: 1.2em;
 	left: 0;
 	top: 0;
+	position: relative;
+	height: 100vh;
 	.double-center {
 		position: absolute;
 		top: 50%;
@@ -197,7 +202,6 @@ export default {
 		border: 3px solid darkcyan;
 		border-radius: 5px;
 		display: flex;
-		gap: 1rem;
 		flex-direction: column;
 		padding-top: 10%;
 		button {
@@ -215,7 +219,7 @@ export default {
 		}
 		.title {
 			position: absolute;
-			top: -15%;
+			top: -25%;
 			left: 50%;
 			transform: translateX(-50%);
 		}
@@ -244,16 +248,15 @@ export default {
 	}
 	.exerciseIng {
 		width: 80vw;
-		height: 80vw;
+		height: 90vw;
 		border: 3px solid darkcyan;
 		border-radius: 5px;
 		display: flex;
-		gap: 1rem;
 		flex-direction: column;
 		padding-top: 10%;
 		.title {
 			position: absolute;
-			top: -15%;
+			top: -25%;
 			left: 50%;
 			transform: translateX(-50%);
 		}
@@ -268,8 +271,8 @@ export default {
 		color: #3eede7;
 	}
 	.countdown {
-		color: #dc3023;
-		font-size: 3.5rem;
+		color: #f20c00;
+		font-size: 11rem;
 		font-weight: 700;
 	}
 	.exerciseIng-item {
