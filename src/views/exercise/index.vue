@@ -30,7 +30,11 @@
 					<span>秒</span>
 				</div>
 			</template>
-			<button class="" @click="confirmSet">确认</button>
+			<div class="exerciseIng-item">
+				<Button size="small" type="primary" @click="confirmSet"
+					>确认</Button
+				>
+			</div>
 		</div>
 		<div class="exerciseIng double-center" v-else-if="state === '2'">
 			<h2 class="title">运动界面</h2>
@@ -43,24 +47,21 @@
 			</h3>
 			<div class="countdown">{{ countdown }}</div>
 			<div class="exerciseIng-item" v-if="!exerciseIng">
-				<button
-					style="background: linear-gradient(315deg,#498ff2 0,#4965f2 100%)"
-					@click="start()"
-				>
-					开始
-				</button>
+				<Button size="small" type="primary" @click="start">确认</Button>
 			</div>
 		</div>
 		<div class="exerciseSuccess double-center" v-else-if="state === '3'">
-			运动完成✅,不错哦⛽️
+			运动完成✅<br />不错哦⛽️
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
-import { Toast } from "vant";
+import { Toast, Button } from "vant";
+import { ExerciseRecord } from "../../js/api/exerciseRecord";
 export default defineComponent({
+	components: { Button },
 	setup() {
 		const state = reactive({
 			state: "1", //0开始状态,1设置状态,2运动窗口,3锻炼完成
@@ -123,14 +124,14 @@ export default defineComponent({
 						}
 						if (state.countdown % 2 === 0) {
 							// 偶数
-							state.tempColor = "rgb(68 206 246 / 50%)";
+							state.tempColor = "#000";
 						} else {
 							// 奇数
 							state.tempColor = "#44cef6";
 						}
 					} else {
 						if (state.countdown % 2 === 0) {
-							state.tempColor = "rgba(0,0,0,0.5)";
+							state.tempColor = "#fff";
 						} else {
 							state.tempColor = "#000";
 						}
@@ -162,16 +163,28 @@ export default defineComponent({
 						state.tempColor = "#eacd76";
 						audio.src = success;
 						audio.play();
+						upLoadData();
 						window.clearInterval(timer);
 					}
 				}
 			}, 1000);
 		};
+		const upLoadData = async () => {
+			const reqData = {
+				user_id: String(localStorage.getItem("_id")), //用户id
+				duration: state.exerciseTime * 60, //运动用时,秒
+				number_of_times: state.exerciseNumber, //运动分的次数
+				number_of_breaks: state.restNumber, //休息的次数
+				single_time: state.restTime //单次休息的时间s秒
+			};
+			await ExerciseRecord.save(reqData).then(res => {
+				console.log(res);
+			});
+		};
 		return {
 			...toRefs(state),
 			start,
-			confirmSet,
-			Interval
+			confirmSet
 		};
 	}
 });
@@ -190,7 +203,6 @@ export default defineComponent({
 		top: 50%;
 		left: 50%;
 		transform: translateY(-50%) translateX(-50%);
-		box-shadow: rgba(0, 0, 0, 50%) 0px 0px 8px;
 	}
 	.start {
 		font-size: 2rem;
@@ -204,19 +216,7 @@ export default defineComponent({
 		display: flex;
 		flex-direction: column;
 		padding-top: 10%;
-		button {
-			position: absolute;
-			bottom: 10%;
-			left: 50%;
-			background: linear-gradient(315deg, #498ff2 0, #4965f2 100%);
-			transform: translateX(-50%);
-			border-radius: 5px;
-			padding: 5px 20px;
-			color: #fff;
-			border: none;
-			font-weight: 500;
-			font-size: 1rem;
-		}
+
 		.title {
 			position: absolute;
 			top: -25%;
@@ -275,19 +275,9 @@ export default defineComponent({
 		font-size: 11rem;
 		font-weight: 700;
 	}
-	.exerciseIng-item {
-		button {
-			color: #fff;
-			background: #ff4d4f;
-			border: none;
-			border-radius: 5px;
-			padding: 5px 20px;
-			background: linear-gradient(135deg, #fa2c19 0, #fa6419 100%);
-			border: 1px solid transparent;
-		}
-	}
 }
 .exerciseSuccess {
 	font-size: 3rem;
+	width: 100%;
 }
 </style>

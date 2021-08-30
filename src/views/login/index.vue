@@ -1,20 +1,26 @@
 <template>
-	<div class="login-contenter">
+	<div class="login-container">
 		<h2>登录</h2>
-		<label>账号: </label><input type="text" v-model="Account" /><br /><br />
-		<label>密码: </label
-		><input type="password" v-model="Password" /><br /><br />
-		<button @click.prevent="handleLogin">登录</button>&nbsp;&nbsp;
-		<button @click.prevent="handleRegister">注册</button>
+		<div class="form-container">
+			<Field v-model="Account" @keyup.enter="handleLogin" label="账号" />
+			<Field v-model="Password" @keyup.enter="handleLogin" label="密码" />
+			<Button round block type="primary" @click.prevent="handleLogin"
+				>登录</Button
+			>&nbsp;&nbsp;
+			<Button round block type="primary" @click.prevent="handleRegister">
+				注册
+			</Button>
+		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
-import { Toast } from "vant";
+import { Toast, Button, Field } from "vant";
 import { useRouter } from "vue-router";
 import { UserService } from "../../js/api/user";
 export default defineComponent({
+	components: { Button, Field },
 	setup() {
 		const state = reactive({
 			Account: "", //账户
@@ -22,8 +28,13 @@ export default defineComponent({
 		});
 		const router = useRouter();
 		const handleLogin = async () => {
-			if (state.Account === "" || !state.Password) {
+			if (
+				state.Account === "" ||
+				state.Password === "" ||
+				state.Account.length === 0
+			) {
 				Toast.fail("用户名密码不能为空");
+				return;
 			}
 			const loginParams = {
 				username: state.Account,
@@ -49,6 +60,7 @@ export default defineComponent({
 		const handleRegister = async () => {
 			if (state.Account === "" || !state.Password) {
 				Toast.fail("用户名密码不能为空");
+				return;
 			}
 			const loginParams = {
 				username: state.Account,
@@ -72,9 +84,10 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.login-contenter {
-	form {
-		margin-top: 40%;
+.login-container {
+	.form-container {
+		padding: 0 2vh;
+		margin-top: 20vh;
 	}
 }
 </style>

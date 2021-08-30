@@ -27,6 +27,7 @@ const routes = [
 			)
 	}
 ];
+// todo 需要通过token去判断登录状态
 const router = createRouter({
 	history: createWebHistory("dist"),
 	routes

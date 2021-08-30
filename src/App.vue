@@ -4,7 +4,7 @@
 		<router-link to="/exercise">exercise</router-link> |
 		<router-link to="/about">About</router-link> |
 		<van-button size="small" type="primary" @click.prevent="loginOut"
-			>退出</van-button
+			>退出登录</van-button
 		>
 	</div>
 	<router-view />
