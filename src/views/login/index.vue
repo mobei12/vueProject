@@ -3,7 +3,17 @@
 		<h2>登录</h2>
 		<div class="form-container">
 			<Field v-model="Account" @keyup.enter="handleLogin" label="账号" />
-			<Field v-model="Password" @keyup.enter="handleLogin" label="密码" />
+			<Field
+				v-model="Password"
+				type="password"
+				@keyup.enter="handleLogin"
+				label="密码"
+			/>
+			<Field
+				v-model="myName"
+				@keyup.enter="handleRegister"
+				label="我叫啥"
+			/>
 			<Button round block type="primary" @click.prevent="handleLogin"
 				>登录</Button
 			>&nbsp;&nbsp;
@@ -24,7 +34,8 @@ export default defineComponent({
 	setup() {
 		const state = reactive({
 			Account: "", //账户
-			Password: "" //密码
+			Password: "", //密码
+			myName: "" //密码
 		});
 		const router = useRouter();
 		const handleLogin = async () => {
@@ -33,7 +44,7 @@ export default defineComponent({
 				state.Password === "" ||
 				state.Account.length === 0
 			) {
-				Toast.fail("用户名密码不能为空");
+				Toast.fail("用户名密码都不知道,闷怂");
 				return;
 			}
 			const loginParams = {
@@ -46,20 +57,24 @@ export default defineComponent({
 					localStorage.setItem("username", username);
 					localStorage.setItem("_id", _id);
 					Toast.success({
-						message: "登录成功",
+						message: "登录成功咧,瓜怂",
 						duration: 500,
 						onClose: () => {
 							router.push({ path: "/" });
 						}
 					});
 				} else {
-					Toast.fail("登录失败");
+					Toast.fail("登录都不会,你个瓜怂,失败咧");
 				}
 			});
 		};
 		const handleRegister = async () => {
+			if (state.myName !== "大爷") {
+				Toast.fail("不知道我叫啥,你注册个der");
+				return;
+			}
 			if (state.Account === "" || !state.Password) {
-				Toast.fail("用户名密码不能为空");
+				Toast.fail("用户名密码都没有,搞咩啊");
 				return;
 			}
 			const loginParams = {
@@ -68,7 +83,7 @@ export default defineComponent({
 			};
 			await UserService.resgister(loginParams).then(res => {
 				if (res.data._id && res.data._id !== null) {
-					Toast.success(`${res.data.username}你注册成功了`);
+					Toast.success(`${res.data.username}你注册成功了,牛逼哦`);
 				} else {
 					Toast.fail(res.data.desc);
 				}
