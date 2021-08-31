@@ -175,7 +175,8 @@ export default defineComponent({
 				duration: state.exerciseTime * 60, //运动用时,秒
 				number_of_times: state.exerciseNumber, //运动分的次数
 				number_of_breaks: state.restNumber, //休息的次数
-				single_time: state.restTime //单次休息的时间s秒
+				single_time: state.restTime, //单次休息的时间s秒
+				exercise_type: "tiaosheng" //单次休息的时间s秒
 			};
 			await ExerciseRecord.save(reqData).then(res => {
 				console.log(res);

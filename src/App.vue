@@ -1,8 +1,8 @@
 <template>
 	<div id="nav" v-if="showNav">
-		<router-link to="/home">Home</router-link> |
-		<router-link to="/exercise">exercise</router-link> |
-		<router-link to="/about">About</router-link> |
+		<router-link to="/home">主页</router-link> |
+		<router-link to="/exercise">动起来</router-link> |
+		<router-link to="/about">关于你</router-link> |
 		<van-button size="small" type="primary" @click.prevent="loginOut"
 			>退出登录</van-button
 		>

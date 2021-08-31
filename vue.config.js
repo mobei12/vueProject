@@ -6,13 +6,13 @@ module.exports = {
 	devServer: {
 		proxy: {
 			"/api": {
-				//target: "http://106.53.115.30:80/",
-				target: "http://localhost:8000",
-				changeOrigin: true, // 允许跨域
-				pathRewrite: {
+				target: "http://106.53.115.30/",
+				//target: "http://localhost:8000",
+				changeOrigin: true // 允许跨域
+				/* pathRewrite: {
 					// 重写路径
 					"^/api": ""
-				}
+				} */
 			}
 		}
 	},

@@ -1,22 +1,23 @@
 <template>
 	<div class="home">
 		<img alt="Vue logo" src="../assets/me.jpg" />
+		<h3>你动不动,肥肉都在那里</h3>
+		<h3>你减不减肥,都一样会死</h3>
+		<h3>不想做一件事,总会有N多个理由</h3>
 	</div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-
-@Options({
+import { defineComponent } from "vue";
+export default defineComponent({
 	components: {}
-})
-export default class Home extends Vue {}
+});
 </script>
 <style lang="less">
 .home {
 	padding-top: 20vh;
 	img {
-		width: 80vw;
+		width: 50vw;
 	}
 }
 </style>
