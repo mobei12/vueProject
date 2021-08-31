@@ -32,7 +32,6 @@ export default defineComponent({
 				user_id: String(localStorage.getItem("_id")) //用户id
 			};
 			ExerciseRecord.find(reqData).then(res => {
-				console.log(res);
 				this.number = res.data.length;
 			});
 		}
