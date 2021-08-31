@@ -3,7 +3,7 @@
 		<div class="set " v-if="state === '1'">
 			<div class="set-item">
 				<Field
-					v-model="exerciseTime"
+					v-model.number="exerciseTime"
 					type="digit"
 					label="运动时间(分)"
 				/>
@@ -19,14 +19,14 @@
 			<template v-if="needRest">
 				<div class="set-item">
 					<Field
-						v-model="restNumber"
+						v-model.number="restNumber"
 						type="digit"
 						label="休息次数(次):"
 					/>
 				</div>
 				<div class="set-item">
 					<Field
-						v-model="restTime"
+						v-model.number="restTime"
 						type="digit"
 						label="单次休息(秒):"
 					/>
@@ -49,7 +49,7 @@
 				<Button type="primary" @click="start">开始</Button>
 			</div>
 		</div>
-		<div class="exerciseSuccess double-center" v-else-if="state === '3'">
+		<div class="exerciseSuccess" v-else-if="state === '3'">
 			运动完成✅<br />不错哦⛽️
 		</div>
 	</div>
@@ -68,8 +68,8 @@ export default defineComponent({
 			exerciseTime: 1, //运动时间
 			partExerciseTime: 0, //单次运动时间
 			exerciseNumber: 1, //运动次数
-			restNumber: 0, //休息次数
-			restTime: 0, //每次休息时间
+			restNumber: 1, //休息次数
+			restTime: 5, //每次休息时间
 			countdown: 0, //读秒
 			restIng: false, //正在休息
 			tempColor: "#1c1c1c",
@@ -80,7 +80,7 @@ export default defineComponent({
 		let ready = require("../../static/file/ready.mp3");
 		let success = require("../../static/file/success.mp3");
 		const start = function() {
-			state.tempColor = "#000";
+			state.tempColor = "#fff";
 			state.exerciseIng = true;
 			state.countdown = state.partExerciseTime;
 			state.exerciseNumber = state.exerciseNumber - 1;
@@ -175,7 +175,7 @@ export default defineComponent({
 				number_of_times: state.exerciseNumber, //运动分的次数
 				number_of_breaks: state.restNumber, //休息的次数
 				single_time: state.restTime, //单次休息的时间s秒
-				exercise_type: "tiaosheng" //单次休息的时间s秒
+				exercise_type: "jumpRope" //单次休息的时间s秒
 			};
 			await ExerciseRecord.save(reqData).then(res => {
 				console.log(res);
@@ -218,6 +218,8 @@ export default defineComponent({
 		top: 20%;
 		position: relative;
 		flex-direction: column;
+		font-size: 2rem;
+		font-weight: bold;
 		.detail {
 			color: #0aa344;
 		}
@@ -237,5 +239,7 @@ export default defineComponent({
 .exerciseSuccess {
 	font-size: 3rem;
 	width: 100%;
+	top: 20%;
+	position: relative;
 }
 </style>
