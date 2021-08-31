@@ -1,6 +1,6 @@
 <template>
 	<div class="login-container">
-		<h2>登录</h2>
+		<div class="title">登录</div>
 		<div class="form-container">
 			<Field v-model="Account" @keyup.enter="handleLogin" label="账号" />
 			<Field
@@ -14,10 +14,10 @@
 				@keyup.enter="handleRegister"
 				label="我叫啥"
 			/>
-			<Button round block type="primary" @click.prevent="handleLogin"
+			<Button size="small" type="primary" @click.prevent="handleLogin"
 				>登录</Button
 			>&nbsp;&nbsp;
-			<Button round block type="primary" @click.prevent="handleRegister">
+			<Button size="small" type="primary" @click.prevent="handleRegister">
 				注册
 			</Button>
 		</div>
@@ -100,9 +100,21 @@ export default defineComponent({
 
 <style lang="less" scoped>
 .login-container {
+	height: 100% !important;
+	padding-top: 2rem;
+	box-sizing: border-box;
+	.title {
+		font-size: 2rem;
+		font-weight: bold;
+	}
 	.form-container {
-		padding: 0 2vh;
-		margin-top: 20vh;
+		--van-cell-background-color: #1c1c1c;
+		--van-field-label-color: #f4f4f4;
+		--van-field-input-text-color: #f4f4f4;
+		padding: 0 2%;
+		.van-cell {
+			margin-bottom: 1rem;
+		}
 	}
 }
 </style>

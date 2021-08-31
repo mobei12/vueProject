@@ -7,7 +7,7 @@
 			>退出登录</van-button
 		>
 	</div>
-	<router-view />
+	<router-view style="height:calc(100% - 82px)" />
 </template>
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
@@ -50,28 +50,27 @@ export default defineComponent({
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-align: center;
-	color: #2c3e50;
-	position: relative;
+	color: #f4f4f4;
+	background-color: #1c1c1c;
+	height: 100%;
+	width: 100%;
 }
 
 #nav {
-	padding: 30px 0;
-	position: absolute;
-	z-index: 10;
 	display: flex;
 	justify-content: space-around;
-	align-content: center;
 	align-items: center;
-	left: 50%;
-	transform: translateX(-50%);
-	gap: 0.5rem;
-	width: 70%;
+	font-size: 1.5rem;
+	padding: 20px 0;
+
 	a {
 		font-weight: bold;
-		color: #2c3e50;
+		color: #fff;
 
 		&.router-link-exact-active {
+			font-size: 1.8rem;
 			color: #42b983;
+			-webkit-box-reflect: below -10px linear-gradient(transparent 30%, rgba(0, 0, 0, 0.35));
 		}
 	}
 }

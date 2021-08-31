@@ -1,53 +1,52 @@
 <template>
 	<div class="exercise" :style="{ background: tempColor }">
-		<h2
-			class="start double-center"
-			v-if="state === '0'"
-			@click="state = '1'"
-		>
-			开始
-		</h2>
-		<div class="set double-center " v-else-if="state === '1'">
-			<h2 class="title">设置界面</h2>
+		<div class="set " v-if="state === '1'">
 			<div class="set-item">
-				<span>运动💪:</span>
-				<input type="number" v-model.number="exerciseTime" />
-				<span>分</span>
+				<Field
+					v-model="exerciseTime"
+					type="digit"
+					label="运动时间(分)"
+				/>
 			</div>
 			<div class="set-item">
-				<span>需要休息♨️:</span
-				><input type="checkbox" v-model="needRest" />
+				<Checkbox
+					v-model="needRest"
+					label-position="left"
+					shape="square"
+					>需要休息♨️:</Checkbox
+				>
 			</div>
 			<template v-if="needRest">
 				<div class="set-item">
-					<span>休息次数:</span>
-					<input type="number" v-model.number="restNumber" />
-					<span>次</span>
+					<Field
+						v-model="restNumber"
+						type="digit"
+						label="休息次数(次):"
+					/>
 				</div>
 				<div class="set-item">
-					<span>单次休息⌛️:</span>
-					<input type="number" v-model.number="restTime" />
-					<span>秒</span>
+					<Field
+						v-model="restTime"
+						type="digit"
+						label="单次休息(秒):"
+					/>
 				</div>
 			</template>
 			<div class="exerciseIng-item">
-				<Button size="small" type="primary" @click="confirmSet"
-					>确认</Button
-				>
+				<Button type="primary" @click="confirmSet">设置完成</Button>
 			</div>
 		</div>
-		<div class="exerciseIng double-center" v-else-if="state === '2'">
-			<h2 class="title">运动界面</h2>
-			<h3 class="detail">本次运动{{ exerciseTime * 60 }}秒</h3>
-			<h3 class="exercise-detail">
+		<div class="exerciseIng " v-else-if="state === '2'">
+			<div class="detail">本次运动{{ exerciseTime * 60 }}秒</div>
+			<div class="exercise-detail">
 				还要运动{{ exerciseNumber }}次每次{{ partExerciseTime }}秒
-			</h3>
-			<h3 v-if="needRest" class="rest">
+			</div>
+			<div v-if="needRest" class="rest">
 				还有{{ restNumber }}次休息{{ restTime }}秒的机会
-			</h3>
+			</div>
 			<div class="countdown">{{ countdown }}</div>
 			<div class="exerciseIng-item" v-if="!exerciseIng">
-				<Button size="small" type="primary" @click="start">确认</Button>
+				<Button type="primary" @click="start">开始</Button>
 			</div>
 		</div>
 		<div class="exerciseSuccess double-center" v-else-if="state === '3'">
@@ -58,22 +57,22 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
-import { Toast, Button } from "vant";
+import { Toast, Button, Field, Checkbox } from "vant";
 import { ExerciseRecord } from "../../js/api/exerciseRecord";
 export default defineComponent({
-	components: { Button },
+	components: { Button, Field, Checkbox },
 	setup() {
 		const state = reactive({
 			state: "1", //0开始状态,1设置状态,2运动窗口,3锻炼完成
 			needRest: false, //是否需要休息
-			exerciseTime: 0, //运动时间
+			exerciseTime: 1, //运动时间
 			partExerciseTime: 0, //单次运动时间
 			exerciseNumber: 1, //运动次数
 			restNumber: 0, //休息次数
 			restTime: 0, //每次休息时间
 			countdown: 0, //读秒
 			restIng: false, //正在休息
-			tempColor: "#fff",
+			tempColor: "#1c1c1c",
 			exerciseIng: false //
 		});
 		let timer: number;
@@ -195,72 +194,30 @@ export default defineComponent({
 .exercise {
 	text-align: center;
 	font-size: 1.2em;
-	left: 0;
-	top: 0;
 	position: relative;
-	height: 100vh;
-	.double-center {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translateY(-50%) translateX(-50%);
-	}
-	.start {
-		font-size: 2rem;
-		font-weight: 500;
-	}
 	.set {
-		width: 80vw;
-		height: 80vw;
-		border: 3px solid darkcyan;
+		width: 100%;
+		top: 20%;
+		position: relative;
 		border-radius: 5px;
 		display: flex;
 		flex-direction: column;
-		padding-top: 10%;
-
-		.title {
-			position: absolute;
-			top: -25%;
-			left: 50%;
-			transform: translateX(-50%);
-		}
+		gap: 1rem;
+		align-items: center;
 		.set-item {
-			display: grid;
-			grid-template-columns: 2fr 2fr 1fr;
-			grid-template-rows: 1fr;
-			text-align: left;
-			padding: 0 5px;
-			align-items: center;
-			input {
-				border-radius: 5px;
-				border: 1px solid;
-				padding: 5px;
-				width: 5rem;
-			}
-			input[type="checkbox"] {
-				height: 1.5em;
-				width: 1.5rem;
-			}
-			span:last-child {
-				text-align: right;
-				font-weight: 500;
-			}
+			display: flex;
+			--van-checkbox-label-color: #ff;
+			flex-direction: column;
+			gap: 2rem;
+			--van-checkbox-label-color: #ff;
 		}
 	}
 	.exerciseIng {
-		width: 80vw;
-		height: 90vw;
-		border: 3px solid darkcyan;
-		border-radius: 5px;
 		display: flex;
+		width: 100%;
+		top: 20%;
+		position: relative;
 		flex-direction: column;
-		padding-top: 10%;
-		.title {
-			position: absolute;
-			top: -25%;
-			left: 50%;
-			transform: translateX(-50%);
-		}
 		.detail {
 			color: #0aa344;
 		}

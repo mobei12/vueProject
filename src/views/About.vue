@@ -3,7 +3,7 @@
 		<h1>
 			你是<span :style="{ color: '#1CACF4' }">{{ name }}</span>
 		</h1>
-		<h2>
+		<h2 v-if="number">
 			你运动了一共<span :style="{ color: '#4CFC0C', fontSize: '3rem' }">{{
 				number
 			}}</span
@@ -19,7 +19,7 @@ export default defineComponent({
 	data() {
 		return {
 			name: "",
-			number: 10
+			number: null
 		};
 	},
 	mounted() {
@@ -41,6 +41,8 @@ export default defineComponent({
 </script>
 <style lang="less">
 .about {
-	padding-top: 20vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 </style>

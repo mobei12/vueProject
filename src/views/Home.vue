@@ -1,6 +1,5 @@
 <template>
 	<div class="home">
-		<img alt="Vue logo" src="../assets/me.jpg" />
 		<h3>你动不动,肥肉都在那里</h3>
 		<h3>你减不减肥,都一样会死</h3>
 		<h3>不想做一件事,总会有N多个理由</h3>
@@ -15,9 +14,8 @@ export default defineComponent({
 </script>
 <style lang="less">
 .home {
-	padding-top: 20vh;
-	img {
-		width: 50vw;
-	}
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 </style>
