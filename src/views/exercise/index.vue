@@ -154,6 +154,7 @@ export default defineComponent({
 								state.state = "3";
 								audio.src = success;
 								audio.play();
+								upLoadData();
 								window.clearInterval(timer);
 							}
 						}
