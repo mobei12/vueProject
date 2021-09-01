@@ -52,19 +52,26 @@ export default defineComponent({
 				password: state.Password
 			};
 			await UserService.login(loginParams).then(res => {
-				if (res.data && res.data.length > 0) {
-					const { username, _id } = res.data[0];
-					localStorage.setItem("username", username);
-					localStorage.setItem("_id", _id);
-					Toast.success({
-						message: "登录成功咧,瓜怂",
-						duration: 500,
-						onClose: () => {
-							router.push({ path: "/" });
-						}
-					});
+				const { code, message } = res.data;
+				if (code === 200) {
+					if (res.data.user && res.data.token) {
+						localStorage.setItem(
+							"username",
+							res.data.user.username
+						);
+						localStorage.setItem("token", res.data.token);
+						Toast.success({
+							message: "登录成功咧,瓜怂",
+							duration: 500,
+							onClose: () => {
+								router.push({ path: "/home" });
+							}
+						});
+					} else {
+						Toast.fail(message);
+					}
 				} else {
-					Toast.fail("登录都不会,你个瓜怂,失败咧");
+					Toast.fail("报错咧");
 				}
 			});
 		};

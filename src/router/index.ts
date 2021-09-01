@@ -36,7 +36,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
 	//在跳转路由之前，先清除所有的请求
 	clearPending();
-	if (to.name !== "Login" && !localStorage.getItem("_id")) {
+	if (to.name !== "Login" && !localStorage.getItem("token")) {
 		next({ name: "Login" });
 	} else next();
 });

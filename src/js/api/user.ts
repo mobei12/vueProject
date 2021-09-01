@@ -18,9 +18,9 @@ export class UserService {
 	 */
 	static async login(params: LoginParams): Promise<HttpResponse> {
 		return Axios("/api/user/login", {
-			method: "get",
+			method: "POST",
 			responseType: "json",
-			params: {
+			data: {
 				...params
 			}
 		}).then(response => {

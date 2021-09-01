@@ -27,9 +27,9 @@ export class ExerciseRecord {
 	}
 	static async find(params: { user_id: string }): Promise<HttpResponse> {
 		return Axios("/api/exerciseRecord/find", {
-			method: "get",
+			method: "POST",
 			responseType: "json",
-			params: {
+			data: {
 				...params
 			}
 		}).then(response => {

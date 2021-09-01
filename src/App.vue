@@ -32,7 +32,7 @@ export default defineComponent({
 		}
 	},
 	mounted() {
-		if (!localStorage.getItem("_id")) {
+		if (!localStorage.getItem("token")) {
 			this.$router.push("/login");
 		}
 	},
