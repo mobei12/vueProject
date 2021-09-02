@@ -25,13 +25,10 @@ export class ExerciseRecord {
 			return response;
 		});
 	}
-	static async find(params: { user_id: string }): Promise<HttpResponse> {
+	static async find(): Promise<HttpResponse> {
 		return Axios("/api/exerciseRecord/find", {
-			method: "POST",
-			responseType: "json",
-			data: {
-				...params
-			}
+			method: "get",
+			responseType: "json"
 		}).then(response => {
 			return response;
 		});

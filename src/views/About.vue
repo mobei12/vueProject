@@ -28,10 +28,7 @@ export default defineComponent({
 	},
 	methods: {
 		getExerciseRecord: function() {
-			const reqData = {
-				user_id: String(localStorage.getItem("_id")) //用户id
-			};
-			ExerciseRecord.find(reqData).then(res => {
+			ExerciseRecord.find().then(res => {
 				this.number = res.data.length;
 			});
 		}
