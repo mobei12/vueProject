@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { Toast } from "vant";
 import qs from "qs";
 const showStatus = (status: number) => {
 	let message = "";
@@ -41,7 +42,7 @@ const showStatus = (status: number) => {
 	}
 	return `${message}，请检查网络或联系管理员！`;
 };
-
+import router from "../../router";
 const service = axios.create({
 	// 联调
 	// baseURL: process.env.NODE_ENV === 'production' ? `/` : '/api',
@@ -148,8 +149,15 @@ service.interceptors.response.use(
 	(response: AxiosResponse) => {
 		const status = response.status;
 		let msg = "";
-		if (!response.data.token) {
-			localStorage.removeItem("token");
+		if (!response.data.token && response.data.message === "token失效") {
+			Toast.success({
+				message: response.data.message + "返回登录",
+				duration: 1000,
+				onClose: () => {
+					localStorage.removeItem("token");
+					router.push("/login");
+				}
+			});
 		}
 		if (status < 200 || status >= 300) {
 			// 处理http错误，抛到业务代码
