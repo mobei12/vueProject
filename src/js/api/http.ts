@@ -148,9 +148,11 @@ service.interceptors.response.use(
 	(response: AxiosResponse) => {
 		const status = response.status;
 		let msg = "";
+		if (!response.data.token) {
+			localStorage.removeItem("token");
+		}
 		if (status < 200 || status >= 300) {
 			// 处理http错误，抛到业务代码
-			console.log(status);
 			msg = showStatus(status);
 			if (typeof response.data === "string") {
 				response.data = { msg };
