@@ -19,7 +19,7 @@
 	</div>
 </template>
 <script lang="ts">
-import { ExerciseRecord } from "../js/api/exerciseRecord";
+import { ExerciseRecord } from "@/js/api/exerciseRecord";
 import { defineComponent } from "vue";
 export default defineComponent({
 	components: {},

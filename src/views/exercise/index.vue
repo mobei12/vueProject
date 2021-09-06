@@ -73,6 +73,8 @@ export default defineComponent({
 			countdown: 0, //读秒
 			restIng: false, //正在休息
 			tempColor: "#1c1c1c",
+			number_of_times: 0, //存运动次数
+			number_of_breaks: 0, //存休息次数
 			exerciseIng: false //
 		});
 		let timer: number;
@@ -108,6 +110,8 @@ export default defineComponent({
 					(state.exerciseTime * 60) / (state.restNumber + 1)
 				);
 				state.exerciseNumber = state.restNumber + 1;
+				state.number_of_breaks = state.restNumber;
+				state.number_of_times = state.restNumber + 1;
 			}
 			state.partExerciseTime = partExerciseTime;
 			state.state = "2";
@@ -171,10 +175,9 @@ export default defineComponent({
 		};
 		const upLoadData = async () => {
 			const reqData = {
-				user_id: String(localStorage.getItem("_id")), //用户id
 				duration: state.exerciseTime * 60, //运动用时,秒
-				number_of_times: state.exerciseNumber, //运动分的次数
-				number_of_breaks: state.restNumber, //休息的次数
+				number_of_times: state.number_of_times, //运动分的次数
+				number_of_breaks: state.number_of_breaks, //休息的次数
 				single_time: state.restTime, //单次休息的时间s秒
 				exercise_type: "jumpRope" //单次休息的时间s秒
 			};

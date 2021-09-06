@@ -2,7 +2,6 @@ import Axios from "./http";
 import { HttpResponse } from "./types";
 
 interface Params {
-	user_id: String; //用户id
 	duration: Number; //运动用时,秒
 	number_of_times: Number; //运动分的次数
 	number_of_breaks: Number; //休息的次数
