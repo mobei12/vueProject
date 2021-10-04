@@ -28,7 +28,7 @@
 import { defineComponent, reactive, toRefs } from "vue";
 import { Toast, Button, Field } from "vant";
 import { useRouter } from "vue-router";
-import { UserService } from "../../js/api/user";
+import { UserService } from "@/js/api/user";
 export default defineComponent({
 	components: { Button, Field },
 	setup() {

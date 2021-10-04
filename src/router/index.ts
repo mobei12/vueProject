@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 //引入在axios暴露出的clearPending函数
-import { clearPending } from "../js/api/http";
+import { clearPending } from "@/js/api/http";
 const routes = [
 	{ path: "/", redirect: "/home" },
 	{

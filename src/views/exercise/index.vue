@@ -58,7 +58,7 @@
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
 import { Toast, Button, Field, Checkbox } from "vant";
-import { ExerciseRecord } from "../../js/api/exerciseRecord";
+import { ExerciseRecord } from "@/js/api/exerciseRecord";
 export default defineComponent({
 	components: { Button, Field, Checkbox },
 	setup() {
@@ -79,8 +79,9 @@ export default defineComponent({
 		});
 		let timer: number;
 		let audio = new Audio();
-		let ready = require("../../static/file/ready.mp3");
-		let success = require("../../static/file/success.mp3");
+		const ready = require("../../static/file/ready.mp3");
+		const success = require("../../static/file/success.mp3");
+		const rest = require("../../static/file/rest.mp3");
 		const start = function() {
 			state.tempColor = "#fff";
 			state.exerciseIng = true;
@@ -133,6 +134,10 @@ export default defineComponent({
 							state.tempColor = "#44cef6";
 						}
 					} else {
+						if (state.countdown === 2&& state.exerciseNumber>0) {
+							audio.src = rest;
+							audio.play();
+						}
 						if (state.countdown % 2 === 0) {
 							state.tempColor = "#fff";
 						} else {
@@ -213,7 +218,6 @@ export default defineComponent({
 			--van-checkbox-label-color: #ff;
 			flex-direction: column;
 			gap: 2rem;
-			--van-checkbox-label-color: #ff;
 		}
 	}
 	.exerciseIng {
