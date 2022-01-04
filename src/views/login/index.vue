@@ -89,7 +89,7 @@ export default defineComponent({
 				password: state.Password
 			};
 			await UserService.resgister(loginParams).then(res => {
-				if (res.data._id && res.data._id !== null) {
+				if (res.data._id) {
 					Toast.success(`${res.data.username}你注册成功了,牛逼哦`);
 				} else {
 					Toast.fail(res.data.desc);
