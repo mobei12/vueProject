@@ -15,7 +15,6 @@
 			}}</span
 			>秒
 		</h4>
-		<h2>{{ test }}</h2>
 		<h2>
 			上一次运动是
 			<h3
@@ -30,65 +29,66 @@
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref, Ref } from "vue";
-import moment from "moment";
-import { ExerciseRecord } from "@/js/api/exerciseRecord";
-moment.locale("zh-cn");
+import { defineComponent, onMounted, reactive, ref, Ref } from 'vue'
+import moment from 'moment'
+import { ExerciseRecord } from '@/js/api/exerciseRecord'
+moment.locale('zh-cn')
 export default defineComponent({
 	components: {},
 	setup() {
 		const state = reactive({
-			name: "",
+			name: '',
 			number: 0,
 			exerciseTime: 0,
 			lastExercise: {
-				fromNow: "",
-				date: "",
-				time: ""
+				fromNow: '',
+				date: '',
+				time: ''
 			}
-		});
-		let test: Ref<number> = ref(120);
+		})
+		let test: Ref<number> = ref(120)
 		const getExerciseRecord = async () => {
 			await ExerciseRecord.find().then(res => {
-				let dataLength: number = res.data.length;
-				state.number = dataLength;
+				let dataLength: number = res.data.length
+				state.number = dataLength
 				if (dataLength > 0) {
 					let sum: number = res.data.reduce(
 						(a: number, b: { duration: number }) => {
-							return a + b.duration;
+							return a + b.duration
 						},
 						0
-					);
-					state.exerciseTime = sum;
+					)
+					state.exerciseTime = sum
 					state.lastExercise = {
 						fromNow: moment(
 							res.data[dataLength - 1].ctime
 						).fromNow() as string,
 						date: moment(res.data[dataLength - 1].ctime).format(
-							"LLLL"
+							'LLLL'
 						) as string,
 						time:
-							"运动了" + res.data[dataLength - 1].duration + "秒"
-					};
+							'运动了' + res.data[dataLength - 1].duration + '秒'
+					}
 				}
-			});
-		};
+			})
+		}
 		onMounted(() => {
-			state.name = String(localStorage.getItem("username"));
-			getExerciseRecord();
-		});
+			state.name = String(localStorage.getItem('username'))
+			getExerciseRecord()
+		})
 		return {
 			state,
 			test
-		};
+		}
 	}
-});
+})
 </script>
 <style lang="less">
 .about {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	text-align: center;
 	* {
 		margin: 0;
 	}

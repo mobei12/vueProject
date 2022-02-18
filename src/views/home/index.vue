@@ -7,15 +7,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue'
 export default defineComponent({
 	components: {}
-});
+})
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .home {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	text-align: center;
 }
 </style>
