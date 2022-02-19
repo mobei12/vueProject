@@ -27,20 +27,22 @@ const routes: Array<RouteRecordRaw> = [
 			)
 	},
 	{
+		path: '/feedItem',
+		name: 'FeedItem',
+		component: () =>
+			import(/* webpackChunkName: "feed"*/ '../views/feed/Feed.vue')
+	},
+	{
+		path: '/detail',
+		name: 'FeedDetail',
+		component: () =>
+			import(/* webpackChunkName: "detail" */ '../views/feed/Detail.vue')
+	},
+	{
 		path: '/feed',
 		name: 'Feed',
 		component: () =>
-			import(/* webpackChunkName: "feed"*/ '../views/feed/index.vue'),
-		children: [
-			{
-				path: '/detail',
-				name: 'FeedDetail',
-				component: () =>
-					import(
-						/* webpackChunkName: "detail" */ '../views/feed/detail.vue'
-					)
-			}
-		]
+			import(/* webpackChunkName: "feed"*/ '../views/feed/index.vue')
 	}
 ]
 // todo 需要通过token去判断登录状态

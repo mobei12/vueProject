@@ -1,83 +1,93 @@
 <template>
-	<div id="nav" v-if="showNav">
-		<router-link to="/home">主页</router-link>
-		<router-link to="/feed">RSS</router-link>
-		<router-link to="/exercise">动起来</router-link>
-		<router-link to="/about">关于你</router-link>
-		<van-button size="small" type="primary" @click.prevent="loginOut"
-			>退出登录</van-button
-		>
-	</div>
+	<van-nav-bar fixed :title="state.title" />
 	<router-view class="main-content" />
+	<van-tabbar v-model="state.active" @change="onChange">
+		<van-tabbar-item
+			:name="item.name"
+			:icon="item.icon"
+			v-for="item in state.tabList"
+			:key="item.name"
+			>{{ item.title }}</van-tabbar-item
+		>
+	</van-tabbar>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
-import { Button } from 'vant'
+import { defineComponent, onMounted, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+const tabList = [
+	{
+		name: 'home',
+		icon: 'wap-home',
+		title: '主页'
+	},
+	{
+		name: 'feed',
+		icon: 'wap-nav',
+		title: 'RSS'
+	},
+	{
+		name: 'exercise',
+		icon: 'friends',
+		title: '动起来'
+	},
+	{
+		name: 'about',
+		icon: 'manager',
+		title: '关于'
+	}
+]
+import { Tabbar, TabbarItem, NavBar } from 'vant'
 export default defineComponent({
 	name: 'app',
 	components: {
-		vanButton: Button
+		vanTabbar: Tabbar,
+		vanTabbarItem: TabbarItem,
+		vanNavBar: NavBar
 	},
 	computed: {
 		showNav() {
 			return this.$route.path !== '/login'
 		}
 	},
-	methods: {
-		loginOut() {
-			localStorage.clear()
-			this.$router.push('/login')
-		}
-	},
-	mounted() {
-		if (!localStorage.getItem('token')) {
-			this.$router.push('/login')
-		}
-	},
 	setup() {
-		const state = reactive({})
+		const router = useRouter()
+		const state = reactive({
+			title: '主页',
+			active: 'home',
+			tabList
+		})
+		const loginOut = () => {
+			localStorage.clear()
+			router.push('/login')
+		}
+
+		const onChange = (name: string) => {
+			state.title = tabList.filter(item => item.name === name)[0].title
+			router.push({
+				path: `/${name}`
+			})
+		}
+		onMounted(() => {
+			if (!localStorage.getItem('token')) {
+				router.push({
+					path: '/login'
+				})
+			}
+		})
 		return {
-			...toRefs(state)
+			loginOut,
+			onChange,
+			state
 		}
 	}
 })
 </script>
 <style lang="less" scoped>
-#app {
-	font-family: Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #f4f4f4;
-	background-color: #1c1c1c;
-	height: 100%;
+.main-content {
+	position: absolute;
+	top: 50px;
+	left: 0%;
 	width: 100%;
-	display: flex;
-	flex-direction: column;
-	#nav {
-		display: flex;
-		justify-content: space-around;
-		align-items: center;
-		font-size: 1.2rem;
-		height: 82px;
-
-		a {
-			font-weight: bold;
-			color: #000;
-			flex: 1;
-
-			&.router-link-exact-active {
-				font-size: 1.5rem;
-				color: #42b983;
-				-webkit-box-reflect: below -10px linear-gradient(transparent 30%, rgba(0, 0, 0, 0.35));
-			}
-		}
-		button {
-			flex: 1;
-		}
-	}
-	.main-content {
-		flex: 1;
-	}
+	background-color: #fff;
 }
 </style>
