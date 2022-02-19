@@ -1,6 +1,5 @@
 <template>
 	<div class="feeds">
-		<h4>{{ title }}</h4>
 		<div class="feed-list">
 			<div
 				class="feed-item"
@@ -21,12 +20,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive } from 'vue'
+import { defineComponent, onMounted, reactive, inject } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import moment from 'moment'
 moment.locale('zh-cn')
-import { useRoute, useRouter } from 'vue-router'
 import { Rss } from '@/js/api/rss.ts'
-import {} from 'vant'
 export default defineComponent({
 	name: 'Feeds',
 	components: {},
@@ -36,7 +34,12 @@ export default defineComponent({
 		const state = reactive({
 			dataList: Array<any>()
 		})
-		const { title } = route.query
+
+		const title = route.query.title as string
+		const increment = inject('increment') as any
+		const editLeft = inject('editLeft') as any
+		increment(title)
+		editLeft(true)
 		/**
 		 * @description vue-router 路由跳转到详情,配置页面缓存
 		 * @param {string} htmlContent
@@ -71,7 +74,7 @@ export default defineComponent({
 		onMounted(async () => {
 			getList()
 		})
-		return { title, handleClick, state }
+		return { title, state, handleClick }
 	}
 })
 </script>
@@ -81,6 +84,8 @@ export default defineComponent({
 .feeds {
 	color: #000;
 	padding-left: 10px;
+	background-color: #fff;
+	text-align: left;
 	.feed-list {
 		.feed-item {
 			font-size: 14px;

@@ -1,5 +1,10 @@
 <template>
-	<van-nav-bar fixed :title="state.title" />
+	<van-nav-bar
+		:left-arrow="showLeft"
+		@click-left="onClickLeft"
+		fixed
+		:title="title"
+	/>
 	<router-view class="main-content" />
 	<van-tabbar v-model="state.active" @change="onChange">
 		<van-tabbar-item
@@ -12,8 +17,11 @@
 	</van-tabbar>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, reactive } from 'vue'
+import { defineComponent, onMounted, reactive, toRefs, provide } from 'vue'
 import { useRouter } from 'vue-router'
+import { Tabbar, TabbarItem, NavBar } from 'vant'
+//import { mainStore } from '@/store/store.ts'
+import { createStore } from '@/store/testStore.ts'
 const tabList = [
 	{
 		name: 'home',
@@ -36,7 +44,6 @@ const tabList = [
 		title: '关于'
 	}
 ]
-import { Tabbar, TabbarItem, NavBar } from 'vant'
 export default defineComponent({
 	name: 'app',
 	components: {
@@ -52,17 +59,23 @@ export default defineComponent({
 	setup() {
 		const router = useRouter()
 		const state = reactive({
-			title: '主页',
-			active: 'home',
+			active: 'home', //todo 优化底部展示
 			tabList
 		})
+		const onClickLeft = () => {
+			history.back()
+		}
+
 		const loginOut = () => {
 			localStorage.clear()
 			router.push('/login')
 		}
-
+		const { stateStore, increment, editLeft } = createStore()
+		provide('increment', increment)
+		provide('editLeft', editLeft)
 		const onChange = (name: string) => {
-			state.title = tabList.filter(item => item.name === name)[0].title
+			increment(tabList.filter(item => item.name === name)[0].title)
+			editLeft(false)
 			router.push({
 				path: `/${name}`
 			})
@@ -77,6 +90,8 @@ export default defineComponent({
 		return {
 			loginOut,
 			onChange,
+			onClickLeft,
+			...toRefs(stateStore),
 			state
 		}
 	}

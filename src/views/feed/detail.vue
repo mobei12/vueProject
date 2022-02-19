@@ -1,13 +1,12 @@
 <template>
 	<div class="detail">
-		<h4>{{ state.title }}</h4>
 		<div v-html="state.htmlContent" class="html-content"></div>
 		<!-- <iframe :src="state.link" frameborder="0"></iframe> -->
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted } from 'vue'
+import { defineComponent, reactive, onMounted, inject } from 'vue'
 import { useRoute } from 'vue-router'
 export default defineComponent({
 	name: 'Detail',
@@ -19,6 +18,8 @@ export default defineComponent({
 			title: route.query.title as string,
 			htmlContent: ''
 		})
+		const increment = inject('increment') as any
+		increment(state.title)
 		onMounted(() => {
 			const htmlContent: string = sessionStorage.getItem(
 				'htmlContent'
