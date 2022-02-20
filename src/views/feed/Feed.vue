@@ -48,7 +48,7 @@ export default defineComponent({
 		const handleClick = (feed: any): void => {
 			sessionStorage.setItem('htmlContent', feed.content)
 			router.push({
-				path: '/detail',
+				path: '/feedDetail',
 				query: {
 					link: feed.link,
 					title: feed.title

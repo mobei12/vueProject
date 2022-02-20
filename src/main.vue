@@ -29,7 +29,7 @@ const tabList = [
 		title: '主页'
 	},
 	{
-		name: 'feed',
+		name: 'feedMain',
 		icon: 'wap-nav',
 		title: 'RSS'
 	},

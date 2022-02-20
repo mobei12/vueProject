@@ -42,7 +42,9 @@ export default defineComponent({
 .detail {
 	color: #000;
 	.html-content {
+		margin: 0 1rem;
 		p {
+			margin-top: 0;
 			::v-deep img {
 				width: 100%;
 			}

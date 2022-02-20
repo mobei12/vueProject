@@ -2,47 +2,62 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 //引入在axios暴露出的clearPending函数
 import { clearPending } from '@/js/api/http'
 const routes: Array<RouteRecordRaw> = [
-	{ path: '/', redirect: '/home' },
-	{
-		path: '/home',
-		name: 'Home',
-		component: () => import('@/views/home/index.vue')
-	},
 	{
 		path: '/login',
 		name: 'Login',
 		component: () => import('@/views/login/index.vue')
 	},
 	{
-		path: '/about',
-		name: 'About',
-		component: () => import('@/views/about/index.vue')
-	},
-	{
-		path: '/exercise',
-		name: 'Exercise',
-		component: () =>
-			import(
-				/* webpackChunkName: "exercise"*/ '../views/exercise/index.vue'
-			)
-	},
-	{
-		path: '/feedItem',
-		name: 'FeedItem',
-		component: () =>
-			import(/* webpackChunkName: "feed"*/ '../views/feed/Feed.vue')
-	},
-	{
-		path: '/detail',
-		name: 'FeedDetail',
-		component: () =>
-			import(/* webpackChunkName: "detail" */ '../views/feed/Detail.vue')
-	},
-	{
-		path: '/feed',
-		name: 'Feed',
-		component: () =>
-			import(/* webpackChunkName: "feed"*/ '../views/feed/index.vue')
+		path: '/main',
+		name: 'Main',
+		component: () => import('@/main.vue'),
+		children: [
+			{
+				path: '/home',
+				name: 'Home',
+				component: () =>
+					import(
+						/* webpackChunkName: "exercise"*/ '@/views/home/index.vue'
+					)
+			},
+			{
+				path: '/exercise',
+				name: 'Exercise',
+				component: () =>
+					import(
+						/* webpackChunkName: "exercise"*/ '@/views/exercise/index.vue'
+					)
+			},
+			{
+				path: '/feedItem',
+				name: 'FeedItem',
+				component: () =>
+					import(
+						/* webpackChunkName: "feed"*/ '@/views/feed/Feed.vue'
+					)
+			},
+			{
+				path: '/feedDetail',
+				name: 'FeedDetail',
+				component: () =>
+					import(
+						/* webpackChunkName: "detail" */ '@/views/feed/Detail.vue'
+					)
+			},
+			{
+				path: '/feedMain',
+				name: 'feedMain',
+				component: () =>
+					import(
+						/* webpackChunkName: "feed"*/ '@/views/feed/index.vue'
+					)
+			},
+			{
+				path: '/about',
+				name: 'About',
+				component: () => import('@/views/about/index.vue')
+			}
+		]
 	}
 ]
 // todo 需要通过token去判断登录状态

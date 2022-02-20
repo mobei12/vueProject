@@ -47,18 +47,18 @@ export default defineComponent({
 				url: 'http://www.zhihu.com/rss',
 				icon: 'http://www.zhihu.com/favicon.ico'
 			},
-			{
+			/* {
 				id: 4,
 				title: '抽屉热榜',
 				url: 'http://dig.chouti.com/feed.xml',
 				icon: 'http://www.chouti.com/favicon.ico'
-			} /* 
+			},
 			{
 				id: 5,
 				title: 'alloyteam',
 				url: 'http://www.alloyteam.com/feed',
 				icon: 'http://www.alloyteam.com/favicon.ico'
-			}, */,
+			}, */
 			{
 				id: 6,
 				title: 'ifanr',
