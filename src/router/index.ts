@@ -8,32 +8,45 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import('@/views/login/index.vue')
 	},
 	{
-		path: '/main',
-		name: 'Main',
-		component: () => import('@/main.vue'),
+		path: '/homeCenter',
+		name: 'HomeCenter',
+		redirect: '/homePage',
+		component: () => import('@/views/Home.vue'),
 		children: [
 			{
-				path: '/home',
-				name: 'Home',
+				path: '/homePage',
+				name: 'HomePage',
+				meta: {
+					title: '主页',
+					needBackLeft: false
+				},
 				component: () =>
 					import(
-						/* webpackChunkName: "exercise"*/ '@/views/home/index.vue'
+						/* webpackChunkName: "exercise"*/ '@/views/homePage/index.vue'
 					)
 			},
 			{
 				path: '/exercise',
 				name: 'Exercise',
+				meta: {
+					title: '动起来',
+					needBackLeft: false
+				},
 				component: () =>
 					import(
 						/* webpackChunkName: "exercise"*/ '@/views/exercise/index.vue'
 					)
 			},
 			{
-				path: '/feedItem',
-				name: 'FeedItem',
+				path: '/feedMain',
+				name: 'feedMain',
+				meta: {
+					title: 'RSS',
+					needBackLeft: false
+				},
 				component: () =>
 					import(
-						/* webpackChunkName: "feed"*/ '@/views/feed/Feed.vue'
+						/* webpackChunkName: "feed"*/ '@/views/feed/index.vue'
 					)
 			},
 			{
@@ -45,16 +58,20 @@ const routes: Array<RouteRecordRaw> = [
 					)
 			},
 			{
-				path: '/feedMain',
-				name: 'feedMain',
+				path: '/feedItem',
+				name: 'FeedItem',
 				component: () =>
 					import(
-						/* webpackChunkName: "feed"*/ '@/views/feed/index.vue'
+						/* webpackChunkName: "feed"*/ '@/views/feed/Feed.vue'
 					)
 			},
 			{
 				path: '/about',
 				name: 'About',
+				meta: {
+					title: '关于',
+					needBackLeft: false
+				},
 				component: () => import('@/views/about/index.vue')
 			}
 		]
@@ -68,6 +85,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 	//在跳转路由之前，先清除所有的请求
+
 	clearPending()
 	if (to.name !== 'Login' && !localStorage.getItem('token')) {
 		next({ name: 'Login' })

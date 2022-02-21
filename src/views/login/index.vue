@@ -25,84 +25,81 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from "vue";
-import { Toast, Button, Field } from "vant";
-import { useRouter } from "vue-router";
-import { UserService } from "@/js/api/user";
+import { defineComponent, reactive, toRefs } from 'vue'
+import { Toast, Button, Field } from 'vant'
+import { useRouter } from 'vue-router'
+import { UserService } from '@/js/api/user'
 export default defineComponent({
 	components: { Button, Field },
 	setup() {
 		const state = reactive({
-			Account: "", //账户
-			Password: "", //密码
-			myName: "" //密码
-		});
-		const router = useRouter();
+			Account: '', //账户
+			Password: '', //密码
+			myName: '' //密码
+		})
+		const router = useRouter()
 		const handleLogin = async () => {
 			if (
-				state.Account === "" ||
-				state.Password === "" ||
+				state.Account === '' ||
+				state.Password === '' ||
 				state.Account.length === 0
 			) {
-				Toast.fail("用户名密码都不知道,闷怂");
-				return;
+				Toast.fail('用户名密码都不知道,闷怂')
+				return
 			}
 			const loginParams = {
 				username: state.Account,
 				password: state.Password
-			};
+			}
 			await UserService.login(loginParams).then(res => {
-				const { code, message } = res.data;
+				const { code, message } = res.data
 				if (code === 200) {
 					if (res.data.user && res.data.token) {
-						localStorage.setItem(
-							"username",
-							res.data.user.username
-						);
-						localStorage.setItem("token", res.data.token);
+						localStorage.setItem('username', res.data.user.username)
+						localStorage.setItem('token', res.data.token)
 						Toast.success({
-							message: "登录成功咧,瓜怂",
+							message: '登录成功咧,瓜怂',
 							duration: 500,
 							onClose: () => {
-								router.push({ path: "/home" });
+								router.push({ path: '/home' })
 							}
-						});
+						})
 					} else {
-						Toast.fail(message);
+						Toast.fail(message)
 					}
 				} else {
-					Toast.fail("报错咧");
+					Toast.fail('报错咧')
 				}
-			});
-		};
+			})
+		}
 		const handleRegister = async () => {
-			if (state.myName !== "大爷") {
-				Toast.fail("不知道我叫啥,你注册个der");
-				return;
+			if (state.myName !== '大爷') {
+				Toast.fail('不知道我叫啥,你注册个der')
+				return
 			}
-			if (state.Account === "" || !state.Password) {
-				Toast.fail("用户名密码都没有,搞咩啊");
-				return;
+			if (state.Account === '' || !state.Password) {
+				Toast.fail('用户名密码都没有,搞咩啊')
+				return
 			}
 			const loginParams = {
 				username: state.Account,
 				password: state.Password
-			};
+			}
 			await UserService.resgister(loginParams).then(res => {
 				if (res.data._id) {
-					Toast.success(`${res.data.username}你注册成功了,牛逼哦`);
+					Toast.success(`${res.data.username}你注册成功了,牛逼哦`)
 				} else {
-					Toast.fail(res.data.desc);
+					Toast.fail(res.data.desc)
 				}
-			});
-		};
+			})
+		}
 		return {
 			...toRefs(state),
 			handleLogin,
 			handleRegister
-		};
+		}
 	}
-});
+})
 </script>
 
 <style lang="less" scoped>
@@ -110,14 +107,13 @@ export default defineComponent({
 	height: 100% !important;
 	padding-top: 2rem;
 	box-sizing: border-box;
+	text-align: center;
+	background-color: #fff;
 	.title {
 		font-size: 2rem;
 		font-weight: bold;
 	}
 	.form-container {
-		--van-cell-background-color: #1c1c1c;
-		--van-field-label-color: #f4f4f4;
-		--van-field-input-text-color: #f4f4f4;
 		padding: 0 2%;
 		.van-cell {
 			margin-bottom: 1rem;
