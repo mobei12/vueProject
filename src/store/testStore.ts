@@ -16,7 +16,7 @@ export const createStore = () => {
 	 * @description 修改展示返回按钮的方法
 	 * @param newVal
 	 */
-	const editLeft = (newVal: boolean) => {
+	const editLeft = (newVal: boolean): void => {
 		stateStore.showLeft = newVal
 	}
 

@@ -11,7 +11,7 @@
 					<span>{{ feed.title }}</span>
 				</div>
 				<div class="desc">
-					<span>{{ feed.author || title }}</span>
+					<span>{{ feed.author ?? title }}</span>
 					<span class="time">{{ feed.pubDate }}</span>
 				</div>
 			</div>

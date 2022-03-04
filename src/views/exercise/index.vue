@@ -72,7 +72,7 @@ export default defineComponent({
 			restTime: 5, //每次休息时间
 			countdown: 0, //读秒
 			restIng: false, //正在休息
-			tempColor: '#1c1c1c',
+			tempColor: '#fff',
 			number_of_times: 0, //存运动次数
 			number_of_breaks: 0, //存休息次数
 			exerciseIng: false //

@@ -24,7 +24,7 @@ import { Tabbar, TabbarItem, NavBar } from 'vant'
 import { createStore } from '@/store/testStore.ts'
 const tabList = [
 	{
-		name: 'home',
+		name: 'homePage',
 		icon: 'wap-home',
 		title: '主页'
 	},
@@ -90,7 +90,7 @@ export default defineComponent({
 		}
 
 		onBeforeRouteUpdate(to => {
-			if (to.meta && to.meta.title) {
+			if (to.meta?.title) {
 				increment(to.meta.title as string)
 				editLeft(false)
 			}
