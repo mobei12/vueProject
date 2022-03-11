@@ -1,24 +1,24 @@
 # vue-project
 
-## Project setup
+## 安装依赖
 
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 启动开发
 
 ```
 npm run dev
 ```
 
-### Compiles and minifies for production
+### 打包
 
 ```
 npm run build
 ```
 
-### Lints and fixes files
+### 按规则修复
 
 ```javascript
 npm run lint

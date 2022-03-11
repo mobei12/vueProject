@@ -61,7 +61,7 @@ export default defineComponent({
 							message: '登录成功咧,瓜怂',
 							duration: 500,
 							onClose: () => {
-								router.push({ path: '/home' })
+								router.push({ path: '/homePage' })
 							}
 						})
 					} else {
