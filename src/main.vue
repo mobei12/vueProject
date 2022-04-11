@@ -10,6 +10,7 @@ export default defineComponent({
 	setup() {
 		const router = useRouter()
 		onMounted(() => {
+			console.log('router', router)
 			router.push({ path: '/homePage' })
 		})
 	}
