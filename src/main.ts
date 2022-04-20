@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import { Lazyload } from 'vant';
-import App from '@/Main.vue';
-import router from '@/router/index';
+import App from './app.vue';
+import router from './router/index';
 const app = createApp(App);
 
 app.use(router);

@@ -1,6 +1,6 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 //引入在axios暴露出的clearPending函数
-import { clearPending } from '@/js/api/http'
+import { clearPending } from '@/js/api/http';
 const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/login',
@@ -54,7 +54,7 @@ const routes: Array<RouteRecordRaw> = [
 				name: 'FeedDetail',
 				component: () =>
 					import(
-						/* webpackChunkName: "detail" */ '@/views/feed/Detail.vue'
+						/* webpackChunkName: "detail" */ '@/views/feed/detail.vue'
 					)
 			},
 			{
@@ -76,20 +76,20 @@ const routes: Array<RouteRecordRaw> = [
 			}
 		]
 	}
-]
+];
 // todo 需要通过token去判断登录状态
 const router = createRouter({
 	history: createWebHistory('dist'),
 	routes
-})
+});
 
 router.beforeEach((to, from, next) => {
 	//在跳转路由之前，先清除所有的请求
 
-	clearPending()
+	clearPending();
 	if (to.name !== 'Login' && !localStorage.getItem('token')) {
-		next({ name: 'Login' })
-	} else next()
-})
+		next({ name: 'Login' });
+	} else next();
+});
 
-export default router
+export default router;
