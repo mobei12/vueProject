@@ -6,7 +6,7 @@
 npm install
 ```
 
-### 启动开发
+### 启动开发测试
 
 ```
 npm run dev
