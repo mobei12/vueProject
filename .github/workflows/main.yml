@@ -28,8 +28,8 @@ jobs:
             - name: deploy file to server
               uses: wlixcc/SFTP-Deploy-Action@v1.0
               with:
-                  username: 'root' #ssh user name
-                  hostname: ${{secrets.HOST}}
+                  REMOTE_USER: 'root' #ssh user name
+                  REMOTE_HOST: ${{secrets.HOST}}
                   SSH_PRIVATE_KEY: ${{secrets.ACCESS_TOKEN}}
                   local_path: './dist/*'
                   remote_path: '/data/webStatic/dist'
