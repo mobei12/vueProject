@@ -30,7 +30,7 @@ jobs:
               env:
                   REMOTE_USER: 'root' #ssh user name
                   REMOTE_HOST: ${{secrets.HOST}}
+                  ARGS: '-avz --delete'
                   SSH_PRIVATE_KEY: ${{secrets.ACCESS_TOKEN}}
                   SOURCE: 'dist/'
                   TARGET: '/data/webStatic/dist'
-                  EXCLUDE: '/dist/, /node_modules/'
