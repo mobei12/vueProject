@@ -3,8 +3,6 @@ name: NodeJS with vuepro
 on:
     push:
         branches: [main]
-    pull_request:
-        branches: [main]
 
 jobs:
     build:
@@ -24,3 +22,13 @@ jobs:
               if: steps.cache.outputs.cache-hit != 'true'
               run: |
                   npm install --force
+            - name: build project
+              run: |
+                  npm run run build
+            - name: deploy file to server 
+              uses: wlixcc/SFTP-Deploy-Action@v1.0
+              with:
+                username: 'root'   #ssh user name
+                SSH_PRIVATE_KEY: ${{secrets.ACCESS_TOKEN}}
+                local_path: './dist/*'
+                remote_path: '/data/webStatic/dist'
