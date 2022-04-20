@@ -1,12 +1,12 @@
-const tsImportPluginFactory = require('ts-import-plugin')
-const merge = require('webpack-merge')
+const tsImportPluginFactory = require('ts-import-plugin');
+const merge = require('webpack-merge');
 module.exports = {
 	publicPath: '/dist/',
 	parallel: false, //关闭快速打包,把vant打包进来
 	devServer: {
 		proxy: {
 			'/api': {
-				target: 'http://106.53.115.30/',
+				target: 'http://43.138.194.168/',
 				//target: 'http://localhost:8000',
 				changeOrigin: true // 允许跨域
 				// pathRewrite: {
@@ -36,8 +36,8 @@ module.exports = {
 					compilerOptions: {
 						module: 'es2015'
 					}
-				})
-				return options
-			})
+				});
+				return options;
+			});
 	}
-}
+};
