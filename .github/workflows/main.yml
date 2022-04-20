@@ -31,5 +31,5 @@ jobs:
                   REMOTE_USER: 'root' #ssh user name
                   REMOTE_HOST: ${{secrets.HOST}}
                   SSH_PRIVATE_KEY: ${{secrets.ACCESS_TOKEN}}
-                  SOURCE: './dist/*'
+                  SOURCE: 'dist/'
                   TARGET: '/data/webStatic/dist'
