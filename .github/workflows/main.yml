@@ -24,7 +24,7 @@ jobs:
                   npm install --force
             - name: build project
               run: |
-                  npm run run build
+                  npm  run build
             - name: deploy file to server 
               uses: wlixcc/SFTP-Deploy-Action@v1.0
               with:
