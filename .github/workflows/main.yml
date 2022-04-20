@@ -25,10 +25,10 @@ jobs:
             - name: build project
               run: |
                   npm  run build
-            - name: deploy file to server 
+            - name: deploy file to server
               uses: wlixcc/SFTP-Deploy-Action@v1.0
               with:
-                username: 'root'   #ssh user name
-                SSH_PRIVATE_KEY: ${{secrets.ACCESS_TOKEN}}
-                local_path: './dist/*'
-                remote_path: '/data/webStatic/dist'
+                  username: 'root' #ssh user name
+                  SSH_PRIVATE_KEY: ${{secrets.ACCESS_TOKEN}}
+                  local_path: './dist/*'
+                  remote_path: '/data/webStatic/dist'
