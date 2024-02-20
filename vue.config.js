@@ -6,8 +6,8 @@ module.exports = {
 	devServer: {
 		proxy: {
 			'/api': {
-				target: 'http://43.138.194.168/',
-				//target: 'http://localhost:8000',
+				//target: 'http://43.138.194.168/',
+				target: 'http://localhost:8000',
 				changeOrigin: true // 允许跨域
 				// pathRewrite: {
 				// 	// 重写路径
