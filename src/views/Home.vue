@@ -21,7 +21,7 @@ import { defineComponent, onMounted, reactive, toRefs, provide } from 'vue'
 import { useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { Tabbar, TabbarItem, NavBar } from 'vant'
 //import { mainStore } from '@/store/store.ts'
-import { createStore } from '@/store/testStore.ts'
+import { createStore } from '@/store/testStore'
 const tabList = [
 	{
 		name: 'homePage',
